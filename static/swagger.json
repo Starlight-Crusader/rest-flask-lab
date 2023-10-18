@@ -1,0 +1,136 @@
+{
+    "openapi": "3.0.0",
+
+    "info": {
+      "description": "EScooter App CRUD Test",
+      "version": "1.0.0",
+      "title": "PR SWAGGER API LAB",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+
+    "servers": [
+        {
+        "url": "/"
+        }
+    ],
+
+    "components": {
+        "schemas": {
+            "Scooter": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "battery_level": { "type": "number" }
+                }
+            }
+        }
+    },
+
+    "paths": {
+        "/api/electro-scooters": {
+
+            "post": {
+                "tags": [ "Add a scooter"],
+                "requestBody": {
+                    "description": "POST a new scooter to the DB",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Scooter"
+                            }
+                        }
+                    }
+                },
+                
+                "responses": {
+                    "201": { "description": "CREATED" },
+                    "400": { "description": "BAD REQUEST" }
+                }
+            }
+
+        },
+
+        "/api/electro-scooters/{id}": {
+
+            "get" :{
+                "tags": [ "Get a specific scooter" ],
+                
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "The Id of the scooter to GET",
+                    "required": true,
+                    "schema": { "type": "integer" }
+                }],
+               
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": { "$ref": "#/components/schemas/Scooter" }
+                    },
+                    "404": { "description": "NOT FOUND"  }
+                }
+            },
+
+            "put": {
+                "tags": [ "Update a scooter" ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "The Id of the scooter to PUT",
+                    "required": true,
+                    "schema": { "type": "integer"  }
+                }],
+                
+                "requestBody": {
+                    "description": "Update an existing scooter on the DB",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Scooter"
+                            }
+                        }
+                    }
+                },
+
+                "responses": {
+                    "200": { "description": "OK" },
+                    "404": { "description": "NOT FOUND" }
+                }
+            },
+
+            "delete": {
+                "tags": [ "Delete a scooter" ],
+
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The Id of the scooter to DELETE",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "X-Delete-Password",
+                        "in": "header",
+                        "description": "The password for deletion",
+                        "required": true,
+                        "schema": { "type": "string" }
+                    }
+                ],
+                
+                "responses": {
+                    "200": { "description": "OK" },
+                    "401": { "description": "UNAUTHORIZED" },
+                    "404": { "description": "NOT FOUND" }
+                }
+            }
+
+        }
+    }
+}
